@@ -1,3 +1,4 @@
+import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.variant.ApplicationAndroidComponentsExtension
 import com.heydenapps.arrowwords.buildlogic.configureJacoco
 import org.gradle.api.Plugin
@@ -14,6 +15,13 @@ class AndroidApplicationJacocoConventionPlugin : Plugin<Project> {
   override fun apply(target: Project) {
     with(target) {
       apply(plugin = "jacoco")
+      
+      val androidExtension = extensions.getByType<ApplicationExtension>()
+      
+      androidExtension.buildTypes.configureEach {
+        enableAndroidTestCoverage = true
+        enableUnitTestCoverage = true
+      }
       
       configureJacoco(extensions.getByType<ApplicationAndroidComponentsExtension>())
     }
